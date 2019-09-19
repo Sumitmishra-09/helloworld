@@ -1,0 +1,91 @@
+
+public class hamiltonian {
+	private int numOfVertex;
+	private int [] hamiltonianPath;
+	private int [][] hamiltonianAdjMatrix;
+	
+	public hamiltonian(int [][] hamiltonianAdjMatrix) {
+		this.hamiltonianAdjMatrix = hamiltonianAdjMatrix;
+		this.hamiltonianPath = new int[hamiltonianAdjMatrix.length];//no of rows and column are equal and is equal to the length of path;
+		this.numOfVertex = hamiltonianPath.length; //no of vertex or nodes that needs to be traversed;
+		hamiltonianPath[0]=0;//set first vertex as 0
+		
+}
+	public void result() {
+		if(findFeasibleSolution(1)) {//check feasibility from 2st vertex as 
+			showHamiltonianPath();
+		}else {
+			System.out.println("no solution exist");
+	}
+	}
+	private boolean findFeasibleSolution(int position) {
+	
+	
+		if(position==numOfVertex){//last vertex should be connected to first vertex
+		
+			if(hamiltonianAdjMatrix[position-1][hamiltonianPath[0]]==1) {
+			return true;
+		}else{
+		
+			return false ;
+	    }
+		}
+		
+	
+		
+	for(int vertexIndex=1 ; vertexIndex<numOfVertex ; ++vertexIndex) {
+		
+		if(isFeasible(vertexIndex , position)) {
+		
+			hamiltonianPath[position]=vertexIndex;
+			if(findFeasibleSolution(position+1)) {
+				return true;
+			}
+		}
+	}
+			return false;
+		}
+
+	
+
+	private boolean isFeasible(int vertexIndex, int actualPosition) {
+		// first criteria:whether two nodes are connected  
+		if(hamiltonianAdjMatrix[hamiltonianPath[actualPosition-1]][vertexIndex]==0) {
+			return false;
+			}
+		//whether that particular has already been visited.
+		for(int i=0;i<actualPosition ;i++) {
+			if(hamiltonianPath[i]==vertexIndex) {
+				return false;
+			}
+		}
+		
+		return true;
+	}//backtrack
+
+	private void showHamiltonianPath() {
+		// TODO Auto-generated method stub
+	 System.out.println("hamiltonian paath: ");
+	 for(int i=0 ; i<hamiltonianPath.length;i++) {
+		 System.out.print(hamiltonianPath[i]);
+	 }
+	 System.out.print(hamiltonianPath[0]);
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+      int [][] matrix= {
+    		  {0,1,0,0,0,1},
+    		  {1,0,1,0,0,0},
+    		  {0,1,0,0,1,0},
+    		  {0,0,0,0,1,1},
+    		  {0,0,1,1,0,1},
+    		  {1,0,0,1,1,0}
+    		  };
+      hamiltonian ham = new hamiltonian(matrix);
+      ham.result();
+      
+      
+	}
+
+}
